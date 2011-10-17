@@ -15,14 +15,16 @@ var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
-var Links = function() {
+
+var Model = function(collection) {
+    this.collection = collection;
     this.db = new Db('lecker', new Server('127.0.0.1', 27017, {}));
 }
-
-Links.prototype.connect = function(callback) {
-    if(this.db.state != 'connected') {
-	this.db.open(function(err, db) {
-	    this.db = db;
+Model.prototype.connect = function(callback) {
+    self = this;
+    if(self.db.state != 'connected') {
+	self.db.open(function(err, db) {
+	    self.db = db;
 	    if(err) {
 		throw {name: 'DB Error', message: err};
 	    }
@@ -33,10 +35,10 @@ Links.prototype.connect = function(callback) {
 	callback();
     }
 }
-
-Links.prototype.getCollection = function(callback) {
-    this.connect(function() {
-	db.collection('links', function(err, collection) {
+Model.prototype.getCollection = function(callback) {
+    self = this
+    self.connect(function() {
+	self.db.collection(self.collection, function(err, collection) {
 	    if(err) {
 		throw {name: 'Collection Error', message: err};
 	    }
@@ -44,8 +46,8 @@ Links.prototype.getCollection = function(callback) {
 	});
     });
 }
-
-Links.prototype.find = function(options, callback) {
+Model.prototype.find = function(options, callback) {
+    self = this;
     this.getCollection(function(collection) {
 	collection.find(options).toArray(function(err, results) {
 	    if(err) {
@@ -56,12 +58,12 @@ Links.prototype.find = function(options, callback) {
     });
 }
 
-Links.prototype.insert = function(callback) {
-
-}
 
 
-var l = new Links();
+var Links = Object.create(new Model('links'));
+
+var l = Links;
+
 // get all
 console.log("start");
 l.find({}, function(r) {
@@ -71,14 +73,15 @@ l.find({}, function(r) {
     console.log("pag");
     l.find({"limit": 10, "skip": 10}, function(r) {
 	console.log(r);
-	
+
 	// filter by tags
+	console.log("tags");
 	l.find({$or:[{"tags": "javascript"}, {"tags": "nodejs"}]}, function(r) {
 	    console.log(r);
 	    process.exit();
 	});
-    });
 
+    });
 });
 
 
