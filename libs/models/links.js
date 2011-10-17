@@ -19,30 +19,30 @@ var Links = function() {
     this.db = new Db('lecker', new Server('127.0.0.1', 27017, {}));
 }
 
-Links.prototype.getCollection = function(callback) {
-    console.log(this.db.state);
+Links.prototype.connect = function(callback) {
     if(this.db.state != 'connected') {
 	this.db.open(function(err, db) {
 	    this.db = db;
 	    if(err) {
 		throw {name: 'DB Error', message: err};
 	    }
-	    db.collection('links', function(err, collection) {
-		if(err) {
-		    throw {name: 'Collection Error', message: err};
-		}
-		callback(collection);
-	    });
+	    callback();
 	});
     }
     else {
-	this.db.collection('links', function(err, collection) {
+	callback();
+    }
+}
+
+Links.prototype.getCollection = function(callback) {
+    this.connect(function() {
+	db.collection('links', function(err, collection) {
 	    if(err) {
 		throw {name: 'Collection Error', message: err};
 	    }
 	    callback(collection);
 	});
-    }
+    });
 }
 
 Links.prototype.find = function(options, callback) {
