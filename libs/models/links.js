@@ -5,64 +5,11 @@
  *
  * @package Lecker
  * @subpackage Models
- ****************************************
- Yes! This is fantastically messy. But I will tidy up, just trying
- to get the basics down first
  **/
-var Db = require('mongodb').Db;
-var Connection = require('mongodb').Connection;
-var Server = require('mongodb').Server;
-var BSON = require('mongodb').BSON;
-var ObjectID = require('mongodb').ObjectID;
+// The Links model extends the basic Model functionality
+var Model = require('./_model');
 
-
-var Model = function(collection) {
-    this.collection = collection;
-    this.db = new Db('lecker', new Server('127.0.0.1', 27017, {}));
-}
-Model.prototype.connect = function(callback) {
-    self = this;
-    if(self.db.state != 'connected') {
-	self.db.open(function(err, db) {
-	    self.db = db;
-	    if(err) {
-		throw {name: 'DB Error', message: err};
-	    }
-	    callback();
-	});
-    }
-    else {
-	callback();
-    }
-}
-Model.prototype.getCollection = function(callback) {
-    self = this
-    self.connect(function() {
-	self.db.collection(self.collection, function(err, collection) {
-	    if(err) {
-		throw {name: 'Collection Error', message: err};
-	    }
-	    callback(collection);
-	});
-    });
-}
-Model.prototype.find = function(options, callback) {
-    self = this;
-    this.getCollection(function(collection) {
-	collection.find(options).toArray(function(err, results) {
-	    if(err) {
-		throw {name: 'Find Error', message: err};
-	    }	
-	    callback(results);
-	});
-    });
-}
-
-
-
-var Links = Object.create(new Model('links'));
-
-var l = Links;
+var l = Object.create(new Model('links'));
 
 // get all
 console.log("start");
