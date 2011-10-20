@@ -10,10 +10,28 @@
 var Model = require('./_model');
 var Links = Object.create(new Model('links'));
 
+/**
+ * Inits the Links model, setting user_id
+ **/
 Links.init = function(options) {
     if(options.user_id != undefined) {
 	this.user_id = options.user_id;
     }
+}
+
+/**
+ * Inserts link into database, executing callback on success
+ * @param object - link values to insert to database
+ * @param function - callback, passes mongo records
+ **/
+Links.create = function(link_values, callback) {
+    // possibly validate/sanitize link_values here??
+    link_values.date_added = new Date();
+    if(link_values.user_id == undefined) {
+	link_values.user_id = this.user_id;
+    }
+    var options = {safe: true};
+    this.insert(link_values, options, callback);
 }
 
 

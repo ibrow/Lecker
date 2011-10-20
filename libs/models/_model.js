@@ -19,6 +19,7 @@ var Model = function(collection) {
     this.collection = collection;
     this.db = new Db('lecker', new Server('127.0.0.1', 27017, {}));
 }
+
 /**
  * Connects to the database 
  * @param function callback to execute after connection established
@@ -38,6 +39,7 @@ Model.prototype.connect = function(callback) {
 	callback();
     }
 }
+
 /**
  * Gets the collection for this model
  * @param function callback to execute once collection loaded
@@ -53,6 +55,7 @@ Model.prototype.getCollection = function(callback) {
 	});
     });
 }
+
 /**
  * Wrapper for the mongo find command, with error checking etc
  * @param object options to pass to the find command
@@ -60,7 +63,7 @@ Model.prototype.getCollection = function(callback) {
  **/
 Model.prototype.find = function(query_filter, query_options, callback) {
     self = this;
-    this.getCollection(function(collection) {
+    self.getCollection(function(collection) {
 	collection.find(query_filter, {}, query_options).toArray(function(err, results) {
 	    if(err) {
 		throw {name: 'Find Error', message: err};
@@ -69,5 +72,26 @@ Model.prototype.find = function(query_filter, query_options, callback) {
 	});
     });
 }
+
+
+/**
+ * Wrapper for the mongo insert command, with error checking etc.
+ * @param object - document to insert
+ * @param object - insertion options
+ * @param function - callback
+ **/
+Model.prototype.insert = function(doc, options, callback) {
+    this.getCollection(function(collection) {
+	collection.insert(doc, options, function(err, records){
+	    if(err) {
+		throw {name: 'Insert Error', message: err};
+	    }	
+	    callback(records);
+	});
+    });
+}
+
+
+
 
 module.exports = Model;

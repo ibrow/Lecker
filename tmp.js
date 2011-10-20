@@ -7,20 +7,26 @@ var new_link = {
     url: "http://www.google.com",
     title: "Google Homepage",
     description: "This is Google, what more do you need to know?",
-    tags: ["search", "google"]
+    tags: ["search", "google"],
+    permissions: 1
 }
+Links.create(new_link, function(records) {
+    console.log("Created: "+records[0]._id);
 
-Links.getPage({'tags': ["javascript"]}, function() {
-    Links.getPage(
-	{
-	    page: 2, 
-	    items_per_page: 1
-	}, 
-	function() {
-	    process.exit();
-	}
-    );
+    Links.getPage({'tags': ["javascript"]}, function() {
+	Links.getPage(
+	    {
+		page: 2, 
+		items_per_page: 1
+	    }, 
+	    function() {
+		process.exit();
+	    }
+	);
+    });
+
 });
+
 
 
 /**
