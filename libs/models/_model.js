@@ -58,10 +58,10 @@ Model.prototype.getCollection = function(callback) {
  * @param object options to pass to the find command
  * @param function callback to execute once results returned
  **/
-Model.prototype.find = function(options, callback) {
+Model.prototype.find = function(query_filter, query_options, callback) {
     self = this;
     this.getCollection(function(collection) {
-	collection.find(options).toArray(function(err, results) {
+	collection.find(query_filter, {}, query_options).toArray(function(err, results) {
 	    if(err) {
 		throw {name: 'Find Error', message: err};
 	    }	

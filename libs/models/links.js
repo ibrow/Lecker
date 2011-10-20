@@ -8,42 +8,87 @@
  **/
 // The Links model extends the basic Model functionality
 var Model = require('./_model');
+var Links = Object.create(new Model('links'));
 
-var l = Object.create(new Model('links'));
-
-// get all
-console.log("start");
-l.find({}, function(r) {
-    console.log(r);
-
-    // pagination example
-    console.log("pag");
-    l.find({"limit": 10, "skip": 10}, function(r) {
-	console.log(r);
-
-	// filter by tags
-	console.log("tags");
-	l.find({$or:[{"tags": "javascript"}, {"tags": "nodejs"}]}, function(r) {
-	    console.log(r);
-	    process.exit();
-	});
-
-    });
-});
-
-
+Links.init = function(options) {
+    if(options.user_id != undefined) {
+	this.user_id = options.user_id;
+    }
+}
 
 
 /**
-##Creation of Indexes
-db.links.ensureIndex({"user_id":1, "date_added":-1});
-db.links.ensureIndex({"url": 1});
-db.links.ensureIndex({"tags": 1});
+ * Get a page of links
+ * options:
+ * - tags: array of tag strings to filter links by
+ * - items_per_page: number of items to return
+ * - page: page number to display
+ *
+ * @param options object
+ * @param callback function
+ **/
+Links.getPage = function(options, callback) {
+    // apply any filters
+    var query_filter = this._getQueryFilter(options);
 
-## Insert Command
-doc1 = {user_id: 1, title: 'My Blog', description: 'Do I really need this?', url: 'http://www.robsearles.com', tags: ['javascript', 'nodejs', 'blog', 'php'], date_added: new Date(), permissions: 1};
-db.links.insert(doc1);
-doc2 = {user_id: 1, title: 'My Work', description: 'I probably do not need this', url: 'http://www.ibrow.com', tags: ['blog', 'apps', 'outdated'], date_added: new Date(), permissions: 1};
-db.links.insert(doc2);
-**/
+    // get passed options or defaults
+    var query_options = this._getQueryFilter(options);
 
+    // conduct find
+    this.find(query_filter, query_options, function(results) {
+	console.log("RESULT");
+	console.log(results);
+	callback();
+    });
+}
+
+/**
+ * Private function to construct the query filter object to pass to
+ * the MongoDB find method
+ * Called by getPage
+ * @return object of query filters
+ **/
+Links._getQueryFilter = function(options) {
+    var query_filter = {}
+    
+    if(options.user_id != undefined) 
+	query_filter.user_id = options.user_id;
+    else 
+	query_filter.user_id = this.user_id;
+
+    if(options.tags != undefined) {
+	var or_array = [];
+	for(var tag in options.tags) {
+	    or_array.push({'tags': options.tags[tag]});
+	}
+	query_filter['$or'] = or_array;
+    }
+    return query_filter;
+}
+
+/**
+ * Private function to construct the query options object to pass to
+ * the MongoDB find method
+ * Called by getPage
+ * @return object of query options
+ **/
+Links._getQueryOptions = function(options) {
+    if(options.page == undefined || options.page < 1)
+	this.page = 1;
+    else
+	this.page = options.page
+
+    if(options.items_per_page == undefined)
+	this.items_per_page = 10;
+    else
+	this.items_per_page = options.items_per_page
+
+    // construct the options we'll send to find
+    return query_options = {
+	limit: (this.page * this.items_per_page),
+	skip: ( (this.page-1) * this.items_per_page)
+    };
+}
+
+
+module.exports = Links;
