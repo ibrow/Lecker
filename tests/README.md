@@ -11,7 +11,7 @@ from the root of the project run:
 
 ## Code Coverage
 
-You must have node-jscoverage intalled
+You must have node-jscoverage installed
 
 I have written a shell script to create the needed instrument files and then run vows:
 

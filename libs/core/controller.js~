@@ -1,0 +1,5 @@
+var controller = {
+    test: 'hello'
+};
+
+module.exports = controller;

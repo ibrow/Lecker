@@ -71,3 +71,27 @@ Now, here's a thought. I'm at the point now where I am adding the functionality 
 
 Obviously if the backend is Javascript, and we have a nice ajaxy type frontend, which also uses Javascript, they should both share the same validation. Should always validate server side, and if you can, client side. So far so good - Chriso's Node-Validator is looking good: https://github.com/chriso/node-validator
 
+
+## Translation
+
+Obviously the world is made up of more than just English. As such, need to cope with some translation files.
+
+Should they be files, or in the database?
+
+could possibly have a file structure like:
+/lib/i8ln/en.js
+/lib/i8ln/en_US.js
+/lib/i8ln/fr.js
+/lib/i8ln/es.js
+
+the files could be like:
+export.lang = {
+	    key: 'translation',
+	    another: {
+	    	       key2: 'another translation'
+	}
+}
+These can then be injected into the views via the controller, or via the set app method.
+
+Also, language SHOULD NOT be set by your location. Instead should default to your browser language settings until you change it.
+

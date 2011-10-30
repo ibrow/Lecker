@@ -1,0 +1,43 @@
+!!! 5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		meta(name="viewport", content="initial-scale=1.0, user-scalable=no")
+body
+	#header
+		p#logo Live Unsigned
+		ul
+			li: a(href='/') Map
+			li: a(href='/shows/') Shows
+			li: a(href='/venues/') Venues
+			li: a(href='/artists/') Artists
+
+	#main
+		!= body
+
+	#footer
+		ul
+			li: a(href='/about') About
+			li: a(href='/blog') Blog
+			li: a(href='/faqs') FAQs
+			li: a(href='/terms') Terms
+			li: a(href='http://www.twitter.com/liveunsigned') Twitter
+
+	h4 Example Links
+	ul
+		li: a(href='/') Homepage
+		li: a(href='/login') Login page (non javascript.ajax)
+		li: a(href='/account') Your account page
+		li: a(href='/shows/11-example-country/12-ex-reg') Shows - Region
+		li: a(href='/shows/11-example-country/12-ex-reg/13-ex-city') Shows - City
+		li: a(href='/show/99-show') Show Detail - just show
+		li: a(href='/show/99-88-show') Show with Artist Detail - show and artist
+		li: a(href='/venues/') Venues
+		li: a(href='/venues/11-example-country') Venues - Country
+		li: a(href='/venues/11-example-country/12-ex-reg') Venues - Region
+		li: a(href='/venues/11-example-country/12-ex-reg/13-ex-city') Venues - City
+		li: a(href='/venue/99-venue') Venue Detail
+		li: a(href='/artists/') Artists
+		li: a(href='/artists/11-example-country') Artists - Country
+		li: a(href='/artist/99-artist') Artist Detail

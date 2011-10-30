@@ -1,0 +1,30 @@
+!!! 5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/css/style.css')
+		meta(name="viewport", content="initial-scale=1.0, user-scalable=no")
+body
+	#header
+		p#logo Qwango
+		ul
+			li: a(href='/') Home
+	#main
+		!= body
+
+	#footer
+		ul
+			li: a(href='/about') About
+			li: a(href='/blog') Blog
+			li: a(href='/faqs') FAQs
+			li: a(href='/terms') Terms
+			li: a(href='http://www.twitter.com/') Twitter
+
+	h4 Example Links
+	ul
+		li: a(href='/') Homepage
+		li: a(href='/login') Login page (non javascript.ajax)
+		li: a(href='/account') Your account page
+		li: a(href='/add') Add a new link
+		li: a(href='/u/rob') Rob's public listing
+		li: a(href='/u/rob/t/onetag/anothertag') Rob's public listing filtered by tags

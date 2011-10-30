@@ -1,0 +1,21 @@
+
+
+/**
+ * Router configuration
+ **/
+var Q_Router = function(app) {
+  // decide which version of the site viewing
+  // main, mobile or api
+  app.set('site_version', 'mobile');
+
+  // hand off to the different routes
+  this.home(app);
+  this.account(app);
+}
+
+Q_Router.prototype.home = function(app) {
+  app.get('/', function(req, res) {
+    home.index(req, res);
+  }
+
+}
