@@ -14,9 +14,9 @@ var Links = Object.create(new Model('links'));
  * Inits the Links model, setting user_id
  **/
 Links.init = function(options) {
-    if(options.user_id != undefined) {
-	this.user_id = options.user_id;
-    }
+  if(options.user_id != undefined) {
+    this.user_id = options.user_id;
+  }
 }
 
 /**
@@ -25,13 +25,13 @@ Links.init = function(options) {
  * @param function - callback, passes mongo records
  **/
 Links.create = function(link_values, callback) {
-    // possibly validate/sanitize link_values here??
-    link_values.date_added = new Date();
-    if(link_values.user_id == undefined) {
-	link_values.user_id = this.user_id;
-    }
-    var options = {safe: true};
-    this.insert(link_values, options, callback);
+  // possibly validate/sanitize link_values here??
+  link_values.date_added = new Date();
+  if(link_values.user_id == undefined) {
+    link_values.user_id = this.user_id;
+  }
+  var options = {safe: true};
+  this.insert(link_values, options, callback);
 }
 
 
@@ -46,18 +46,18 @@ Links.create = function(link_values, callback) {
  * @param callback function
  **/
 Links.getPage = function(options, callback) {
-    // apply any filters
-    var query_filter = this._getQueryFilter(options);
+  // apply any filters
+  var query_filter = this._getQueryFilter(options);
 
-    // get passed options or defaults
-    var query_options = this._getQueryFilter(options);
+  // get passed options or defaults
+  var query_options = this._getQueryFilter(options);
 
-    // conduct find
-    this.find(query_filter, query_options, function(results) {
-	console.log("RESULT");
-	console.log(results);
-	callback();
-    });
+  // conduct find
+  this.find(query_filter, query_options, function(results) {
+    console.log("RESULT");
+    console.log(results);
+    callback();
+  });
 }
 
 /**
@@ -67,21 +67,21 @@ Links.getPage = function(options, callback) {
  * @return object of query filters
  **/
 Links._getQueryFilter = function(options) {
-    var query_filter = {}
-    
-    if(options.user_id != undefined) 
-	query_filter.user_id = options.user_id;
-    else 
-	query_filter.user_id = this.user_id;
+  var query_filter = {}
+  
+  if(options.user_id != undefined) 
+    query_filter.user_id = options.user_id;
+  else 
+    query_filter.user_id = this.user_id;
 
-    if(options.tags != undefined) {
-	var or_array = [];
-	for(var tag in options.tags) {
-	    or_array.push({'tags': options.tags[tag]});
-	}
-	query_filter['$or'] = or_array;
+  if(options.tags != undefined) {
+    var or_array = [];
+    for(var tag in options.tags) {
+      or_array.push({'tags': options.tags[tag]});
     }
-    return query_filter;
+    query_filter['$or'] = or_array;
+  }
+  return query_filter;
 }
 
 /**
@@ -91,21 +91,21 @@ Links._getQueryFilter = function(options) {
  * @return object of query options
  **/
 Links._getQueryOptions = function(options) {
-    if(options.page == undefined || options.page < 1)
-	this.page = 1;
-    else
-	this.page = options.page
+  if(options.page == undefined || options.page < 1)
+    this.page = 1;
+  else
+    this.page = options.page
 
-    if(options.items_per_page == undefined)
-	this.items_per_page = 10;
-    else
-	this.items_per_page = options.items_per_page
+  if(options.items_per_page == undefined)
+    this.items_per_page = 10;
+  else
+    this.items_per_page = options.items_per_page
 
-    // construct the options we'll send to find
-    return query_options = {
-	limit: (this.page * this.items_per_page),
-	skip: ( (this.page-1) * this.items_per_page)
-    };
+  // construct the options we'll send to find
+  return query_options = {
+    limit: (this.page * this.items_per_page),
+    skip: ( (this.page-1) * this.items_per_page)
+  };
 }
 
 

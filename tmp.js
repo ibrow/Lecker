@@ -20,7 +20,7 @@ Links.create(new_link, function(records) {
 		items_per_page: 1
 	    }, 
 	    function() {
-		process.exit();
+//		process.exit();
 	    }
 	);
     });

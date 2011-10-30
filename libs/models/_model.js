@@ -39,6 +39,10 @@ Model.prototype.connect = function(callback) {
 	callback();
     }
 }
+Model.prototype.close = function() {
+  // Let's close the db
+  this.db.close();
+}
 
 /**
  * Gets the collection for this model
@@ -81,6 +85,8 @@ Model.prototype.find = function(query_filter, query_options, callback) {
  * @param function - callback
  **/
 Model.prototype.insert = function(doc, options, callback) {
+  console.log("insert");
+
     this.getCollection(function(collection) {
 	collection.insert(doc, options, function(err, records){
 	    if(err) {

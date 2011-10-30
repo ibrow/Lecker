@@ -63,3 +63,11 @@ Not needed for now, but if we go for multiple users, will be as follows:
 Based on the above, when ever we add, update or remove a link we will have to update 3 collections - amending the Links collection itself, but then also updating the Tags and Users collections to ensure the data integrity. 
 
 Whilst this seems a touch excessive, I guess this is one of the trade offs for using a NoSQL DB solution as opposed to say MySQL.
+
+
+## Validation and structure
+
+Now, here's a thought. I'm at the point now where I am adding the functionality for inserting a new link (commit: c375c22). I've come to an interesting problem (problem is too harsh, but something along those lines) regarding validation and sanitization.
+
+Obviously if the backend is Javascript, and we have a nice ajaxy type frontend, which also uses Javascript, they should both share the same validation. Should always validate server side, and if you can, client side. So far so good - Chriso's Node-Validator is looking good: https://github.com/chriso/node-validator
+
