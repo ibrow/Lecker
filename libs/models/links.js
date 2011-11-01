@@ -54,9 +54,7 @@ Links.getPage = function(options, callback) {
 
   // conduct find
   this.find(query_filter, query_options, function(results) {
-    console.log("RESULT");
-    console.log(results);
-    callback();
+    callback(results);
   });
 }
 

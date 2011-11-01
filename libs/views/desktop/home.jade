@@ -1,3 +1,12 @@
 h1= title
-h2= region
 p Homepage #{title}
+
+
+each item in items
+  li
+    p: a(href='#{item.url}') #{item.title}
+    p= item.description
+    p
+       #{item.tags} #{item.date_added}
+       if item.user != current_user
+         | by #{item.user}
